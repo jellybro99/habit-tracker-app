@@ -1,14 +1,16 @@
+const passport = require("passport");
 const queries = require("../db/queries");
 
-const getIndex = (req, res) => {
-    res.render("index");
+exports.getIndex = (req, res) => {
+    console.log("User: " + req.user);
+    res.render("index", { user: req.user });
 };
 
-const getSignUp = (req, res) => {
+exports.getSignUp = (req, res) => {
     res.render("sign-up");
 };
 
-const postSignUp = (req, res) => {
+exports.postSignUp = (req, res) => {
     try {
         console.log("Request body:", req.body);
         queries.addUser(req.body.username, req.body.password);
@@ -22,8 +24,16 @@ const postSignUp = (req, res) => {
     }
 };
 
-module.exports = {
-    getIndex,
-    getSignUp,
-    postSignUp,
+exports.postLogIn = passport.authenticate("local", {
+    successRedirect: "/",
+    failureRedirect: "/",
+});
+
+exports.getLogOut = (req, res) => {
+    req.logout((err) => {
+        if (err) {
+            return err;
+        }
+        res.redirect("/");
+    });
 };
