@@ -1,6 +1,6 @@
 const pool = require("./pool");
 
-async function addUser(username, password) {
+exports.addUser = async (username, password) => {
     try {
         console.log("Adding user with username: ", username);
         await pool.query(
@@ -12,9 +12,9 @@ async function addUser(username, password) {
         console.error("Error adding user:", err);
         throw err;
     }
-}
+};
 
-async function getUserByUsername(username) {
+exports.getUserByUsername = async (username) => {
     try {
         console.log("Getting user with username: ", username);
         const { rows } = await pool.query(
@@ -26,9 +26,9 @@ async function getUserByUsername(username) {
         console.error("Error getting user:", err);
         throw err;
     }
-}
+};
 
-async function getUserById(id) {
+exports.getUserById = async (id) => {
     try {
         console.log("Getting user with id: ", id);
         const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [
@@ -39,21 +39,4 @@ async function getUserById(id) {
         console.error("Error getting user:", err);
         throw err;
     }
-}
-
-async function verifyPassword(user, password) {
-    try {
-        console.log("Checking password for user: ", user);
-        return user.password === password;
-    } catch {
-        console.error("Error checking password:", err);
-        throw err;
-    }
-}
-
-module.exports = {
-    addUser,
-    getUserByUsername,
-    getUserById,
-    verifyPassword,
 };
