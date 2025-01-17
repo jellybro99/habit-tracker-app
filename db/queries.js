@@ -16,7 +16,7 @@ exports.addUser = async (username, password) => {
 
 exports.getUserByUsername = async (username) => {
     try {
-        console.log("Getting user with username: ", username);
+        //console.log("Getting user with username: ", username);
         const { rows } = await pool.query(
             "SELECT * FROM users WHERE username = $1",
             [username]
@@ -30,7 +30,7 @@ exports.getUserByUsername = async (username) => {
 
 exports.getUserById = async (id) => {
     try {
-        console.log("Getting user with id: ", id);
+        //console.log("Getting user with id: ", id);
         const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [
             id,
         ]);

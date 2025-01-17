@@ -1,10 +1,12 @@
 require("dotenv").config();
 const express = require("express");
-const path = require("path");
-const queries = require("./db/queries");
 const session = require("express-session");
+const path = require("path");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcryptjs");
+
+const queries = require("./db/queries");
 const app = express();
 
 app.set("views", path.join(__dirname, "views"));
@@ -19,17 +21,18 @@ app.use(express.urlencoded({ extended: false }));
 passport.use(
     new LocalStrategy(async (username, password, done) => {
         try {
-            console.log("Authenticating user: ", username);
+            //console.log("Authenticating user: ", username);
             const user = await queries.getUserByUsername(username);
             if (!user) {
                 console.log("no user");
                 return done(null, false, { message: "Incorrect Username" });
             }
-            if (user.password !== password) {
+            const match = await bcrypt.compare(password, user.password);
+            if (!match) {
                 console.log("incorrect password");
                 return done(null, false, { message: "Incorrect Password" });
             }
-            console.log("User authenticated: ", user);
+            //console.log("User authenticated: ", user);
             return done(null, user);
         } catch (err) {
             return done(err);

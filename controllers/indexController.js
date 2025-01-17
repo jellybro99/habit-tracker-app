@@ -1,8 +1,8 @@
 const passport = require("passport");
+const bcrypt = require("bcryptjs");
 const queries = require("../db/queries");
 
 exports.getIndex = (req, res) => {
-    console.log("User: " + req.user);
     res.render("index", { user: req.user });
 };
 
@@ -12,9 +12,13 @@ exports.getSignUp = (req, res) => {
 
 exports.postSignUp = (req, res) => {
     try {
-        console.log("Request body:", req.body);
-        queries.addUser(req.body.username, req.body.password);
-        res.redirect("/");
+        bcrypt.hash(req.body.password, 10, async (err, hashedPassword) => {
+            if (err) {
+                throw err;
+            }
+            queries.addUser(req.body.username, hashedPassword);
+            res.redirect("/");
+        });
     } catch (err) {
         console.error("Error during sign-up:", err);
         console.error("Error stack trace:", err.stack);
