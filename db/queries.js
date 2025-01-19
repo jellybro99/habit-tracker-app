@@ -1,13 +1,14 @@
-const pool = require("./pool");
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
 exports.addUser = async (username, password) => {
     try {
-        console.log("Adding user with username: ", username);
-        await pool.query(
-            "INSERT INTO users (username, password) VALUES ($1, $2)",
-            [username, password]
-        );
-        console.log("User added successfully");
+        await prisma.users.create({
+            data: {
+                username: username,
+                password: password,
+            },
+        });
     } catch (err) {
         console.error("Error adding user:", err);
         throw err;
@@ -16,12 +17,12 @@ exports.addUser = async (username, password) => {
 
 exports.getUserByUsername = async (username) => {
     try {
-        //console.log("Getting user with username: ", username);
-        const { rows } = await pool.query(
-            "SELECT * FROM users WHERE username = $1",
-            [username]
-        );
-        return rows[0];
+        const user = await prisma.users.findFirst({
+            where: {
+                username: username,
+            },
+        });
+        return user;
     } catch (err) {
         console.error("Error getting user:", err);
         throw err;
@@ -30,11 +31,12 @@ exports.getUserByUsername = async (username) => {
 
 exports.getUserById = async (id) => {
     try {
-        //console.log("Getting user with id: ", id);
-        const { rows } = await pool.query("SELECT * FROM users WHERE id = $1", [
-            id,
-        ]);
-        return rows[0];
+        const user = await prisma.users.findUnique({
+            where: {
+                id: id,
+            },
+        });
+        return user;
     } catch (err) {
         console.error("Error getting user:", err);
         throw err;
