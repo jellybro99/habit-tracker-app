@@ -75,6 +75,9 @@ const indexRouter = require("./routes/indexRouter");
 
 app.use("/habit", habitRouter);
 app.use("/", indexRouter);
+app.get("*", (req, res) => {
+    res.render("404");
+});
 
 app.listen(3000, () => {
     console.log("http://localhost:3000");
