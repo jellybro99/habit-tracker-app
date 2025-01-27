@@ -5,3 +5,11 @@
     --color-dark: oklch(33.09% 0.0313 328.49);
     --color-accent: oklch(68.53% 0.2294 141.89);
 }
+
+.btn-primary {
+    @apply inline-block bg-dark px-8 py-3 text-sm font-medium text-white transition hover:scale-105 hover:shadow-sm focus:outline-none cursor-pointer hover:text-accent;
+}
+
+.btn {
+    @apply inline-block bg-light px-8 py-3 text-sm font-medium text-black border-black border-2 transition hover:scale-105 hover:shadow-sm focus:outline-none cursor-pointer hover:text-accent;
+}
