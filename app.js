@@ -1,22 +1,28 @@
+//basic imports
 require("dotenv").config();
 const express = require("express");
-const session = require("express-session");
 const path = require("path");
+
+//authentication imports
+const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcryptjs");
 
+//session store imports
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const { PrismaClient } = require("@prisma/client");
 
 const queries = require("./db/queries");
 const app = express();
 
+//view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, "public")));
 
+//session setup
 app.use(
     session({
         cookie: {
@@ -35,6 +41,7 @@ app.use(
 app.use(passport.session());
 app.use(express.urlencoded({ extended: false }));
 
+//authentication setup
 passport.use(
     new LocalStrategy(async (username, password, done) => {
         try {
@@ -49,7 +56,6 @@ passport.use(
                 console.log("incorrect password");
                 return done(null, false, { message: "Incorrect Password" });
             }
-            //console.log("User authenticated: ", user);
             return done(null, user);
         } catch (err) {
             return done(err);
@@ -63,13 +69,20 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
     try {
-        const user = queries.getUserById(id);
+        const user = await queries.getUserById(id);
         done(null, user);
     } catch (err) {
         done(err);
     }
 });
 
+//middleware
+app.use(async (req, res, next) => {
+    res.locals.currentUser = req.user;
+    next();
+});
+
+//routes
 const habitRouter = require("./routes/habitRouter");
 const indexRouter = require("./routes/indexRouter");
 
