@@ -6,10 +6,16 @@
         <link rel="stylesheet" href="output.css" />
         <title>Habit Tracker App</title>
     </head>
-    <body>
+    <body class="min-h-screen bg-light flex flex-col">
+        <%- include('navbar') %>
+        <div class="h-full flex justify-center items-center pt-4">
+            <h1 class="text-accent text-6xl">hi</h1>
+        </div>
+
+        <!--
         <div class="text-8xl">hi</div>
-        Habit Tracker App <% if (locals.user) {%>
-        <h1>WELCOME BACK <%= user.username %></h1>
+        Habit Tracker App <% if (locals.currentUser) {%>
+        <h1>WELCOME BACK <%= locals.currentUser.username %></h1>
         <a href="/log-out">LOG OUT</a>
         <% } else {%>
         <h1>please log in</h1>
@@ -26,6 +32,6 @@
             <button>Log In</button>
         </form>
         <a href="/sign-up">sign up</a>
-        <% } %>
+        <% } %>-->
     </body>
 </html>

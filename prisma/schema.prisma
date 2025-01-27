@@ -18,6 +18,7 @@ model habit {
   id     Int    @id @default(autoincrement())
   name   String @db.VarChar(255)
   icon   Int?
+  //still need to add string to hold json calendar information.
   user   users  @relation(fields: [userId], references: [id])
   userId Int
 }

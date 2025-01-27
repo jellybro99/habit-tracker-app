@@ -1,0 +1,11 @@
+<nav class="bg-dark flex justify-between items-center">
+    <a href="/" class="text-accent text-2xl p-4">LOGO</a>
+    <div class="flex">
+        <% if (locals.currentUser) { %>
+        <a href="/log-out" class="text-light p-4">Log Out</a>
+        <% } else { %>
+        <a href="/log-in" class="text-light p-4">Log In</a>
+        <a href="/sign-up" class="text-light p-4">Sign Up</a>
+        <% } %>
+    </div>
+</nav>

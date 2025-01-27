@@ -3,7 +3,7 @@ const bcrypt = require("bcryptjs");
 const queries = require("../db/queries");
 
 exports.getIndex = (req, res) => {
-    res.render("index", { user: req.user });
+    res.render("index");
 };
 
 exports.getSignUp = (req, res) => {
