@@ -42,3 +42,19 @@ exports.getUserById = async (id) => {
         throw err;
     }
 };
+
+exports.addHabit = async (userId, habitName, icon) => {
+    try {
+        await prisma.habits.create({
+            data: {
+                name: habitName,
+                icon: icon,
+                //datesCompleted: [],
+                userId: userId,
+            },
+        });
+    } catch (err) {
+        console.error("Error adding habit:", err);
+        throw err;
+    }
+};
